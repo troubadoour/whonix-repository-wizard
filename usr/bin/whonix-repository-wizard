@@ -1,0 +1,4 @@
+#!/usr/bin/python
+
+from whonixrepository import whonix_repository_wizard
+whonix_repository_wizard.main()
