@@ -1,5 +1,7 @@
 not_root:
   icon: Critical
+  button: Ok
+  position: center
   en:
     title: Root privileges required
     message:
