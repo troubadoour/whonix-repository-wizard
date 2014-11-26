@@ -8,7 +8,7 @@ from guimessages.translations import _translations
 from guimessages.guimessage import gui_message
 
 class common:
-    tr_file ='/usr/lib/python2.7/dist-packages/whonixrepository/whonix_repository.yaml'
+    tr_file ='/usr/lib/python2.7/dist-packages/whonix_repository_wizard/whonix_repository.yaml'
 
 class whonix_repository_wizard(QtGui.QWizard):
     def __init__(self):
