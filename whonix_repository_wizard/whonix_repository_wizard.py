@@ -2,8 +2,13 @@
 
 from PyQt4 import QtCore, QtGui
 from subprocess import call
+
+from PyQt4.QtCore import Qt
+from PyQt4.QtGui import QApplication, QCursor
+
 import os, inspect
 import yaml
+
 from guimessages.translations import _translations
 from guimessages.guimessage import gui_message
 
@@ -121,46 +126,62 @@ class whonix_repository_wizard(QtGui.QWizard):
         if self.currentId() < 2:
             if self.enable_button.isChecked():
                 return self.currentId() + 1
+
             elif self.disable_button.isChecked():
                 if self.one_shot:
                     command = 'whonix_repository --disable'
                     exit_code = call(command, shell=True)
                     mypath = inspect.getfile(inspect.currentframe())
+
                     if exit_code == 0:
                         self.finish_text.setText(self.finish_text_disabled)
                         message = 'INFO %s: Ok, exit code of "%s" was %s.' % ( mypath, command, exit_code )
+
                     else:
                         error = '<p>ERROR %s: exit code of \"%s\" was %s.</p>' % ( mypath, command, exit_code )
                         finish_text_failed =  error + self.finish_text_failed
                         self.finish_text.setText(finish_text_failed)
                         message = error
+
                     command = 'echo ' + message
                     call(command, shell=True)
                     self.one_shot = False
+
                 return self.currentId() + 2
 
         elif self.currentId() == 2:
             if self.repo1.isChecked():
                 codename = ' --codename stable'
+
             elif self.repo2.isChecked():
                 codename = ' --codename testers'
+
             elif self.repo3.isChecked():
                 codename = ' --codename developers'
+
             if self.one_shot:
                 command = 'whonix_repository --enable' + codename
+
+                QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
                 exit_code = call(command, shell=True)
+                QApplication.restoreOverrideCursor()
+
                 mypath = inspect.getfile(inspect.currentframe())
+
                 if exit_code == 0:
                     self.finish_text.setText(self.finish_text_enabled)
                     message = "INFO %s: Ok, exit code of \"%s\" was %s." % ( mypath, command, exit_code )
+
                 else:
                     error = '<p>ERROR %s: exit code of \"%s\" was %s.</p>' % ( mypath, command, exit_code )
                     finish_text_failed =  error + self.finish_text_failed
                     self.finish_text.setText(finish_text_failed)
                     message = error
                 command = 'echo ' + message
+
                 call(command, shell=True)
                 self.one_shot = False
+
             self.button(QtGui.QWizard.CancelButton).setVisible(False)
             return -1
         else:
