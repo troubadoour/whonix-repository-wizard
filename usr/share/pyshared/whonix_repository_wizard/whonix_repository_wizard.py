@@ -117,7 +117,7 @@ class whonix_repository_wizard(QtGui.QWizard):
 
     """ re-arm command. """
     def BackButton_clicked(self):
-        self.button(QtGui.QWizard.CancelButton).setEnabled(True)
+        self.button(QtGui.QWizard.CancelButton).setVisible(True)
         if not self.one_shot:
             self.one_shot = True
 
@@ -182,7 +182,7 @@ class whonix_repository_wizard(QtGui.QWizard):
                 call(command, shell=True)
                 self.one_shot = False
 
-            self.button(QtGui.QWizard.CancelButton).setEnabled(False)
+            self.button(QtGui.QWizard.CancelButton).setVisible(False)
             return -1
         else:
             return -1
