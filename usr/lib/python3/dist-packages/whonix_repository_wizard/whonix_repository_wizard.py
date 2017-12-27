@@ -1,10 +1,11 @@
-#!/usr/bin/python
+#!/usr/bin/python3 -u
 
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtGui
 from subprocess import call
 
-from PyQt4.QtCore import Qt
-from PyQt4.QtGui import QApplication, QCursor
+from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QCursor
+from PyQt5.QtWidgets import *
 
 import os, inspect
 import yaml
@@ -15,7 +16,7 @@ from guimessages.guimessage import gui_message
 class common:
     tr_file ='/usr/share/translations/whonix_repository.yaml'
 
-class whonix_repository_wizard(QtGui.QWizard):
+class whonix_repository_wizard(QWizard):
     def __init__(self):
         super(whonix_repository_wizard, self).__init__()
 
@@ -42,22 +43,22 @@ class whonix_repository_wizard(QtGui.QWizard):
         palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.Base, brush)
         self.setPalette(palette)
 
-        self.page_enable = QtGui.QWizardPage()
-        self.enable_group = QtGui.QGroupBox(self.page_enable)
-        self.enable_button = QtGui.QRadioButton(self.enable_group)
-        self.disable_button = QtGui.QRadioButton(self.enable_group)
+        self.page_enable = QWizardPage()
+        self.enable_group = QGroupBox(self.page_enable)
+        self.enable_button = QRadioButton(self.enable_group)
+        self.disable_button = QRadioButton(self.enable_group)
         self.addPage(self.page_enable)
 
-        self.page_repos = QtGui.QWizardPage()
-        self.repo_text = QtGui.QLabel(self.page_repos)
-        self.repo_group = QtGui.QGroupBox(self.page_repos)
-        self.repo1 = QtGui.QRadioButton(self.repo_group)
-        self.repo2 = QtGui.QRadioButton(self.repo_group)
-        self.repo3 = QtGui.QRadioButton(self.repo_group)
+        self.page_repos = QWizardPage()
+        self.repo_text = QLabel(self.page_repos)
+        self.repo_group = QGroupBox(self.page_repos)
+        self.repo1 = QRadioButton(self.repo_group)
+        self.repo2 = QRadioButton(self.repo_group)
+        self.repo3 = QRadioButton(self.repo_group)
         self.addPage(self.page_repos)
 
-        self.page_finish = QtGui.QWizardPage()
-        self.finish_text = QtGui.QLabel(self.page_finish)
+        self.page_finish = QWizardPage()
+        self.finish_text = QLabel(self.page_finish)
         self.addPage(self.page_finish)
 
         self.one_shot = True
@@ -65,7 +66,7 @@ class whonix_repository_wizard(QtGui.QWizard):
         self.setupUi()
 
     def setupUi(self):
-        self.enable_text = QtGui.QLabel(self.page_enable)
+        self.enable_text = QLabel(self.page_enable)
         self.enable_text.setGeometry(QtCore.QRect(10, 10, 445, 150))
         self.enable_text.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
         self.enable_text.setWordWrap(True)
@@ -74,7 +75,7 @@ class whonix_repository_wizard(QtGui.QWizard):
         self.enable_button.setChecked(True)
         self.disable_button.setGeometry(QtCore.QRect(30, 30, 300, 21))
 
-        self.repo_text = QtGui.QLabel(self.page_repos)
+        self.repo_text = QLabel(self.page_repos)
         self.repo_text.setGeometry(QtCore.QRect(10, 10, 430, 140))
         self.repo_text.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
         self.repo_text.setWordWrap(True)
@@ -111,13 +112,13 @@ class whonix_repository_wizard(QtGui.QWizard):
         self.repo2.setText("Whonix Testers Repository")
         self.repo3.setText("Whonix Developers Repository")
 
-        self.button(QtGui.QWizard.BackButton).clicked.connect(self.BackButton_clicked)
+        self.button(QWizard.BackButton).clicked.connect(self.BackButton_clicked)
 
         self.exec_()
 
     """ re-arm command. """
     def BackButton_clicked(self):
-        self.button(QtGui.QWizard.CancelButton).setEnabled(True)
+        self.button(QWizard.CancelButton).setEnabled(True)
         if not self.one_shot:
             self.one_shot = True
 
@@ -182,7 +183,7 @@ class whonix_repository_wizard(QtGui.QWizard):
                 call(command, shell=True)
                 self.one_shot = False
 
-            self.button(QtGui.QWizard.CancelButton).setEnabled(False)
+            self.button(QWizard.CancelButton).setEnabled(False)
             return -1
         else:
             return -1
@@ -190,11 +191,11 @@ class whonix_repository_wizard(QtGui.QWizard):
 
 def main():
     import sys
-    app = QtGui.QApplication(sys.argv)
+    app = QApplication(sys.argv)
 
     # root check.
     if os.getuid() != 0:
-        print 'ERROR: This must be run as root!\nUse "kdesudo".'
+        print('ERROR: This must be run as root!\nUse "kdesudo".')
         not_root = gui_message(common.tr_file, 'not_root')
         sys.exit(1)
 

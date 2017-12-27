@@ -16,7 +16,8 @@ Standards-Version: 3.9.4
 
 Package: whonix-repository-wizard
 Architecture: all
-Depends: whonix-repository, menu, ${misc:Depends}, ${python:Depends}, python-yaml, python-guimessages
+Depends: whonix-repository, menu, ${misc:Depends}, ${python:Depends},
+ python3-yaml, python3-guimessages, python3
 Recommends: anon-icon-pack
 Description: GUI Whonix APT Repository Tool
  This tool can always be used to enable either Whonix's stable, testers or
